@@ -23,17 +23,17 @@ array __new_array_with_default(int mylen, int cap, int elm_size, void* val) {
   if (val != 0) {
     u8* eptr = ((u8*)(arr.data));
     if (eptr != ((void*)0)) {
-		  if (arr.element_size == 1) {
-			  u8 byte_value = *(((u8*)(val)));
-			  for (int i = 0; i < arr.len; ++i)
+      if (arr.element_size == 1) {
+        u8 byte_value = *(((u8*)(val)));
+        for (int i = 0; i < arr.len; ++i)
           eptr[i] = byte_value;
-			} else {
-			  for (int _t1 = 0; _t1 < arr.len; ++_t1) {
-				  memcpy(eptr, val, arr.element_size);
-				  eptr += arr.element_size;
-				}
-			}
-		}
+      } else {
+        for (int _t1 = 0; _t1 < arr.len; ++_t1) {
+          memcpy(eptr, val, arr.element_size);
+          eptr += arr.element_size;
+        }
+      }
+    }
   }
   return arr;
 }
@@ -44,14 +44,14 @@ array __new_array_with_multi_default(int mylen, int cap, int elm_size, void* val
   u64 total_size = (u64)(((u64)(cap_)) * ((u64)(elm_size)));
   arr.data = jcalloc(__at_least_one(total_size));
   if (val != 0) {
-	  u8* eptr = ((u8*)(arr.data));
+    u8* eptr = ((u8*)(arr.data));
     if (eptr != ((void*)0)) {
-		  for (int i = 0; i < arr.len; ++i) {
-			  memcpy(eptr, ((char*)(val)) + (int)(i * arr.element_size), arr.element_size);
-			  eptr += arr.element_size;
-			}
-		}
-	}
+      for (int i = 0; i < arr.len; ++i) {
+        memcpy(eptr, ((char*)(val)) + (int)(i * arr.element_size), arr.element_size);
+        eptr += arr.element_size;
+      }
+    }
+  }
   return arr;
 }
 
@@ -59,15 +59,15 @@ array __new_array_with_array_default(int mylen, int cap, int elm_size, array val
   int cap_ = (cap < mylen ? (mylen) : (cap));
   array arr = ((array){.data = jmalloc(__at_least_one((u64)(((u64)(cap_)) * ((u64)(elm_size))))),.offset = 0,.len = mylen,.cap = cap_,/*.flags = 0,*/.element_size = elm_size,});
   u8* eptr = ((u8*)(arr.data));
-	{ // Unsafe block
-	  if (eptr != ((void*)0)) {
-		  for (int _t1 = 0; _t1 < arr.len; ++_t1) {
-			  array val_clone = array_clone_to_depth(&val, depth);
-			  memcpy(eptr, &val_clone, arr.element_size);
-			  eptr += arr.element_size;
-			}
-		}
-	}
+  { // Unsafe block
+    if (eptr != ((void*)0)) {
+      for (int _t1 = 0; _t1 < arr.len; ++_t1) {
+        array val_clone = array_clone_to_depth(&val, depth);
+        memcpy(eptr, &val_clone, arr.element_size);
+        eptr += arr.element_size;
+      }
+    }
+  }
   return arr;
 }
 
@@ -85,20 +85,20 @@ array new_array_from_c_array_no_alloc(int len, int cap, int elm_size, void* c_ar
 
 void array_ensure_cap(array* a, int required) {
   if (required <= a->cap) {
-	  return;
-	}
+    return;
+  }
   if (ArrayFlags_has(&a->flags, ArrayFlags__nogrow)) __panic( str_intp(2, _MOV((StrIntpData[]){{_SLIT("array.ensure_cap: array with the flag `.nogrow` cannot grow in size, array required new size: "), /*100 &int*/0x7, {.d_i32 = required}}, {_SLIT0, 0, { .d_c = 0 }}})));
   int cap = (a->cap > 0 ? (a->cap) : (2));
   for (;;) {
-	  if (!(required > cap)) break;
-	  cap *= 2;
-	}
+    if (!(required > cap)) break;
+    cap *= 2;
+  }
   u64 new_size = (u64)(((u64)(cap)) * ((u64)(a->element_size)));
   u8* new_data = jmalloc(__at_least_one(new_size));
   if (a->data != ((void*)0)) {
-	  memcpy(new_data, a->data, (u64)(((u64)(a->len)) * ((u64)(a->element_size))));
-	  if (ArrayFlags_has(&a->flags, ArrayFlags__noslices)) jfree(a->data);
-	}
+    memcpy(new_data, a->data, (u64)(((u64)(a->len)) * ((u64)(a->element_size))));
+    if (ArrayFlags_has(&a->flags, ArrayFlags__noslices)) jfree(a->data);
+  }
   a->data = new_data;
   a->offset = 0;
   a->cap = cap;
@@ -114,21 +114,21 @@ array array_repeat_to_depth(array a, int count, int depth) {
   if (size == 0U) size = ((u64)(a.element_size));
   array arr = ((array){.data = jcalloc(size),.offset = 0,.len = (int)(count * a.len),.cap = (int)(count * a.len),.flags = 0,.element_size = a.element_size,});
   if (a.len > 0) {
-	  u64 a_total_size = (u64)(((u64)(a.len)) * ((u64)(a.element_size)));
-	  u64 arr_step_size = (u64)(((u64)(a.len)) * ((u64)(arr.element_size)));
-	  u8* eptr = ((u8*)(arr.data));
-	  if (eptr != ((void*)0)) {
-		  for (int _t1 = 0; _t1 < count; ++_t1) {
-			  if (depth > 0) {
-				  array ary_clone = array_clone_to_depth(&a, depth);
-				  memcpy(eptr, ((u8*)(ary_clone.data)), a_total_size);
-				} else {
-				  memcpy(eptr, ((u8*)(a.data)), a_total_size);
-				}
-			  eptr += arr_step_size;
-			}
-		}
-	}
+    u64 a_total_size = (u64)(((u64)(a.len)) * ((u64)(a.element_size)));
+    u64 arr_step_size = (u64)(((u64)(a.len)) * ((u64)(arr.element_size)));
+    u8* eptr = ((u8*)(arr.data));
+    if (eptr != ((void*)0)) {
+      for (int _t1 = 0; _t1 < count; ++_t1) {
+        if (depth > 0) {
+          array ary_clone = array_clone_to_depth(&a, depth);
+          memcpy(eptr, ((u8*)(ary_clone.data)), a_total_size);
+        } else {
+          memcpy(eptr, ((u8*)(a.data)), a_total_size);
+        }
+        eptr += arr_step_size;
+      }
+    }
+  }
   return arr;
 }
 
@@ -158,15 +158,15 @@ void array_delete(array* a, int i) { array_delete_many(a, i, 1); }
 
 void array_delete_many(array* a, int i, int size) {
   if (i < 0 || (int)(i + size) > a->len) {
-	  string endidx = (size > 1 ? ( str_intp(2, _MOV((StrIntpData[]){{_SLIT(".."), /*100 &int*/0x7, {.d_i32 = (int)(i + size)}}, {_SLIT0, 0, { .d_c = 0 }}}))) : (_SLIT("")));
-		// __panic( str_intp(4, _MOV((StrIntpData[]){{_SLIT("array.delete: index out of range  (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT0, /*115 &string*/0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
-	  __panic( str_intp(4, _MOV((StrIntpData[]){{_SLIT("array.delete: Індекс поза межами діапазону  (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT0, /*115 &string*/0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
-	}
+    string endidx = (size > 1 ? ( str_intp(2, _MOV((StrIntpData[]){{_SLIT(".."), /*100 &int*/0x7, {.d_i32 = (int)(i + size)}}, {_SLIT0, 0, { .d_c = 0 }}}))) : (_SLIT("")));
+    // __panic( str_intp(4, _MOV((StrIntpData[]){{_SLIT("array.delete: index out of range  (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT0, /*115 &string*/0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+    __panic( str_intp(4, _MOV((StrIntpData[]){{_SLIT("array.delete: Індекс поза межами діапазону  (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT0, /*115 &string*/0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+  }
   if (ArrayFlags_all(&a->flags, (ArrayFlags__noshrink | ArrayFlags__noslices))) {
-	  memmove(((u8*)(a->data)) + (u64)(((u64)(i)) * ((u64)(a->element_size))), ((u8*)(a->data)) + (u64)(((u64)((int)(i + size))) * ((u64)(a->element_size))), (u64)(((u64)((int)((int)(a->len - i) - size))) * ((u64)(a->element_size))));
-	  a->len -= size;
-	  return;
-	}
+    memmove(((u8*)(a->data)) + (u64)(((u64)(i)) * ((u64)(a->element_size))), ((u8*)(a->data)) + (u64)(((u64)((int)(i + size))) * ((u64)(a->element_size))), (u64)(((u64)((int)((int)(a->len - i) - size))) * ((u64)(a->element_size))));
+    a->len -= size;
+    return;
+  }
   void* old_data = a->data;
   int new_size = (int)(a->len - size);
   int new_cap = (new_size == 0 ? (1) : (new_size));
@@ -229,22 +229,22 @@ void array_delete_last(array* a) {
 
 array array_slice(array a, int start, int _end) {
   int end = (_end == _const_max_int ? (a.len) : (_end));
-	#if !defined(CUSTOM_DEFINE_no_bounds_checking)
-	{
-	  if (start > end) {
-		  __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.slice: invalid slice index ("), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" > "), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
-		  UNREACHABLE();
-		}
-	  if (end > a.len) {
-		  __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.slice: slice bounds out of range ("), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(" >= "), /*100 &int*/0x7, {.d_i32 = a.len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
-		  UNREACHABLE();
-		}
-	  if (start < 0) {
-		  __panic(str_intp(2, _MOV((StrIntpData[]){{_SLIT("array.slice: slice bounds out of range ("), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" < 0)"), 0, { .d_c = 0 }}})));
-		  UNREACHABLE();
-		}
-	}
-	#endif
+  #if !defined(CUSTOM_DEFINE_no_bounds_checking)
+  {
+    if (start > end) {
+      __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.slice: invalid slice index ("), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" > "), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+      UNREACHABLE();
+    }
+    if (end > a.len) {
+      __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.slice: slice bounds out of range ("), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(" >= "), /*100 &int*/0x7, {.d_i32 = a.len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+      UNREACHABLE();
+    }
+    if (start < 0) {
+      __panic(str_intp(2, _MOV((StrIntpData[]){{_SLIT("array.slice: slice bounds out of range ("), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" < 0)"), 0, { .d_c = 0 }}})));
+      UNREACHABLE();
+    }
+  }
+  #endif
   u64 offset = (u64)(((u64)(start)) * ((u64)(a.element_size)));
   u8* data = ((u8*)(a.data)) + offset;
   int l = (int)(end - start);
@@ -256,24 +256,24 @@ array array_slice_ni(array a, int _start, int _end) {
   int end = (_end == _const_max_int ? (a.len) : (_end));
   int start = _start;
   if (start < 0) {
-	  start = (int)(a.len + start);
-	  if (start < 0) {
-		  start = 0;
-		}
-	}
+    start = (int)(a.len + start);
+    if (start < 0) {
+      start = 0;
+    }
+  }
   if (end < 0) {
-	  end = (int)(a.len + end);
-	  if (end < 0) {
-		  end = 0;
-		}
-	}
+    end = (int)(a.len + end);
+    if (end < 0) {
+      end = 0;
+    }
+  }
   if (end >= a.len) {
-	  end = a.len;
-	}
+    end = a.len;
+  }
   if (start >= a.len || start > end) {
-	  array res = ((array){.data = a.data,.offset = 0,.len = 0,.cap = 0,.flags = 0,.element_size = a.element_size,});
-	  return res;
-	}
+    array res = ((array){.data = a.data,.offset = 0,.len = 0,.cap = 0,.flags = 0,.element_size = a.element_size,});
+    return res;
+  }
   u64 offset = (u64)(((u64)(start)) * ((u64)(a.element_size)));
   u8* data = ((u8*)(a.data)) + offset;
   int l = (int)(end - start);
@@ -292,27 +292,27 @@ array array_clone(array* a) {
 array array_clone_to_depth(array* a, int depth) {
   array arr = ((array){.data = jcalloc((u64)(((u64)(a->cap)) * ((u64)(a->element_size)))),.offset = 0,.len = a->len,.cap = a->cap,.flags = 0,.element_size = a->element_size,});
   if (depth > 0 && _us32_eq(sizeof(array),a->element_size) && a->len >= 0 && a->cap >= a->len) {
-	  for (int i = 0; i < a->len; ++i) {
-		  array ar = ((array){.data = 0,.offset = 0,.len = 0,.cap = 0,.flags = 0,.element_size = 0,});
-		  memcpy(&ar, array_get_unsafe(/*rec*/*a, i), ((int)(sizeof(array))));
-		  array ar_clone = array_clone_to_depth(&ar, (int)(depth - 1));
-		  array_set_unsafe(&arr, i, &ar_clone);
-		}
-	  return arr;
-	} else {
-	  if (a->data != 0) {
-		  memcpy(((u8*)(arr.data)), a->data, (u64)(((u64)(a->cap)) * ((u64)(a->element_size))));
-		}
-	  return arr;
-	}
+    for (int i = 0; i < a->len; ++i) {
+      array ar = ((array){.data = 0,.offset = 0,.len = 0,.cap = 0,.flags = 0,.element_size = 0,});
+      memcpy(&ar, array_get_unsafe(/*rec*/*a, i), ((int)(sizeof(array))));
+      array ar_clone = array_clone_to_depth(&ar, (int)(depth - 1));
+      array_set_unsafe(&arr, i, &ar_clone);
+    }
+    return arr;
+  } else {
+    if (a->data != 0) {
+      memcpy(((u8*)(arr.data)), a->data, (u64)(((u64)(a->cap)) * ((u64)(a->element_size))));
+    }
+    return arr;
+  }
   return (array){.data = 0,.offset = 0,.len = 0,.cap = 0,.element_size = 0,};
 }
 
 void array_set(array* a, int i, void* val) {
   if (i < 0 || i >= a->len) {
-	  __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.set: index out of range (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
-	  UNREACHABLE();
-	}
+    __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.set: index out of range (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+    UNREACHABLE();
+  }
   memcpy(((u8*)(a->data)) + (u64)(((u64)(a->element_size)) * ((u64)(i))), val, a->element_size);
 }
 
@@ -326,19 +326,19 @@ void array_push_many(array* a3, void* val, int size) {
   if (size <= 0 || val == ((void*)0)) return;
   array_ensure_cap(a3, (int)(a3->len + size));
   if (a3->data == val && a3->data != 0) {
-	  array copy = array_clone(a3);
-	  memcpy(((u8*)(a3->data)) + (u64)(((u64)(a3->element_size)) * ((u64)(a3->len))), copy.data, (u64)(((u64)(a3->element_size)) * ((u64)(size))));
-	} else {
-	  if (a3->data != 0 && val != 0)
-		  memcpy(((u8*)(a3->data)) + (u64)(((u64)(a3->element_size)) * ((u64)(a3->len))), val, (u64)(((u64)(a3->element_size)) * ((u64)(size))));
-	}
+    array copy = array_clone(a3);
+    memcpy(((u8*)(a3->data)) + (u64)(((u64)(a3->element_size)) * ((u64)(a3->len))), copy.data, (u64)(((u64)(a3->element_size)) * ((u64)(size))));
+  } else {
+    if (a3->data != 0 && val != 0)
+      memcpy(((u8*)(a3->data)) + (u64)(((u64)(a3->element_size)) * ((u64)(a3->len))), val, (u64)(((u64)(a3->element_size)) * ((u64)(size))));
+  }
   a3->len += size;
 }
 
 void array_free(array* a) {
   if (ArrayFlags_has(&a->flags, ArrayFlags__nofree)) {
-	  __panic(_SLIT("array.free: array with the flag `.nofree` cannot be freed"));
-	  UNREACHABLE();
+    __panic(_SLIT("array.free: array with the flag `.nofree` cannot be freed"));
+    UNREACHABLE();
   }
   u8* mblock_ptr = ((u8*)((u64)(((u64)(a->data)) - ((u64)(a->offset)))));
   jfree(mblock_ptr);

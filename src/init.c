@@ -23,16 +23,16 @@ void builtin_init(void) {
   SetConsoleOutputCP(_const_cp_utf8);
   atexit((void*)restore_codepage);
   if (is_terminal(1) > 0) {
-	  SetConsoleMode(GetStdHandle(_const_std_output_handle), ((_const_enable_processed_output | _const_enable_wrap_at_eol_output) | _const_evable_virtual_terminal_processing));
-	  SetConsoleMode(GetStdHandle(_const_std_error_handle), ((_const_enable_processed_output | _const_enable_wrap_at_eol_output) | _const_evable_virtual_terminal_processing));
-		{ // Unsafe block
-		  setbuf(stdout, 0);
-		  setbuf(stderr, 0);
-		}
-	}
-	#if !defined(_JAEYEONG_DEV_NO_BACKTRACE)
-	{
-		// add_unhandled_exception_handler();
-	}
-	#endif
+    SetConsoleMode(GetStdHandle(_const_std_output_handle), ((_const_enable_processed_output | _const_enable_wrap_at_eol_output) | _const_evable_virtual_terminal_processing));
+    SetConsoleMode(GetStdHandle(_const_std_error_handle), ((_const_enable_processed_output | _const_enable_wrap_at_eol_output) | _const_evable_virtual_terminal_processing));
+    { // Unsafe block
+      setbuf(stdout, 0);
+      setbuf(stderr, 0);
+    }
+  }
+  #if !defined(_JAEYEONG_DEV_NO_BACKTRACE)
+  {
+    // add_unhandled_exception_handler();
+  }
+  #endif
 }
