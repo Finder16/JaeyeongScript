@@ -23,6 +23,30 @@
     "variant": "cpp",
     "iterator": "c",
     "memory": "c",
-    "version": "c"
-  }
+    "version": "c",
+    "*.exe": "c"
+  },
+  "C_Cpp.markdownInComments": "enabled",
+  "C_Cpp.doxygen.generatedStyle": "//!",
+  "C_Cpp.doxygen.generateOnType": true,
+  "C_Cpp.doxygen.sectionTags": [
+    "attention",
+    "tparam",
+    "param",
+    "result",
+    "returns",
+    "retval",
+    "exception",
+    "deprecated",
+    "warning",
+    "note",
+    "bug",
+    "todo",
+    "since",
+    "copyright",
+    "date",
+    "note",
+    "author",
+    "authors"
+  ],
 }

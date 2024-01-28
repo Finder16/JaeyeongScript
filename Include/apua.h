@@ -70,6 +70,11 @@ static inline bool _us64_ne(uint64_t a, int64_t b) { return a > INT64_MAX || (in
 static inline bool _us64_le(uint64_t a, int64_t b) { return a <= INT64_MAX && (int64_t)a <= b; }
 static inline bool _us64_lt(uint64_t a, int64_t b) { return a < INT64_MAX && (int64_t)a < b; }
 
+//! @def UNREACHABLE()
+//! @brief Triggers an error when unreachable code is reached.
+//!
+//! This macro triggers an error when code that should be unreachable is reached.
+//! It prints an error message to the standard error output and terminates the program.
 #define UNREACHABLE() \
   do { \
     fprintf(stderr, "A-pu-A! UNREACHABLE code reached in %s at line %d\n", __FILE__, __LINE__); \

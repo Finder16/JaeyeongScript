@@ -37,7 +37,7 @@ void _writeln_to_fd(int fd, string s) {
 	}
 	// Defer end
 }
-
+ 
 void eprint(string s) {
 	if (s.str == 0) {
 		eprint(_SLIT("eprint(NIL)"));

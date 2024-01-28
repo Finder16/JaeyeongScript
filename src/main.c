@@ -5,6 +5,9 @@
 
 CompilerOptions options;
 
+//! @since 0.1.0
+//! @date 2024-01-28 19:22:00 KST
+//! @brief Prints the usage message and exits.
 void usage(void) {
   eprintln(LANG(_S_JAEYEONG_USAGE, options.language));
   exit(1);
@@ -32,7 +35,7 @@ void parse_option(CompilerOptions* opt, const wchar_t* argv[]) {
   }
 }
 
-int wmain(int argc, wchar_t *argv[]/*, wchar_t *envp[]*/) {
+int wmain(int argc, wchar_t argv[]/*, wchar_t envp[]*/) {
   builtin_init();
   options = default_options();
   parse_option(&options, argv);

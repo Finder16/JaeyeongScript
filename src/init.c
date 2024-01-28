@@ -14,10 +14,6 @@ int is_terminal(int fd) {
 	return ((int)(mode));
 }
 
-// void add_unhandled_exception_handler(void) {
-// 	add_vectored_exception_handler((void*)((VectoredExceptionHandler)(((void*)(unhandled_exception_handler)))));
-// }
-
 void restore_codepage(void) {
 	SetConsoleOutputCP(g_original_codepage);
 }

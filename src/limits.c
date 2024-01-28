@@ -18,4 +18,4 @@ const u32 _const_min_u32 = 0; // precomputed2
 const u32 _const_max_u32 = 4294967295; // precomputed2
 const u64 _const_min_u64 = 0U; // precomputed2
 const u64 _const_max_u64 = 18446744073709551615U;
-const f64 _const_max_load_factor = 0.8; // precomputed2
+const f64 _const_max_load_factor = 0.8;

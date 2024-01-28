@@ -9,9 +9,18 @@
 #include "jarray.h"
 #include "jmem.h"
 
+//! @struct string
+//! @brief Represents a string.
+//!
+//! This structure represents a string in the program.
+//! It contains a pointer to a byte array, the length of the array, 
+//! and a flag indicating whether the string is a literal.
 struct string {
+	// The pointer to the byte array representing the string.
   byte* str;
+	// The length of the string.
   size_t len;
+	// A flag indicating whether the string is a literal. If it is a literal, it should not be freed.
 	int is_lit;
 };
 
@@ -70,14 +79,92 @@ typedef enum {
 
 string wchar_to_string(wchar_t* wstr);
 // string u8_ascii_str(_wU8 b);
+//! @brief Concatenate two strings.
+//!
+//! This function concatenates two strings and returns the result as a new string.
+//! It allocates memory for the result string, copies the data from both input strings,
+//! and ensures proper termination with a null character.
+//!
+//! @param s The first string.
+//! @param a The second string.
+//! @return The concatenated string.
 string string__plus(string s, string a);
+//! @brief Convert a byte pointer to a string with a specified length.
+//!
+//! This function takes a pointer to a byte array and a length and creates a string
+//! object with the provided parameters.
+//!
+//! @param bp A pointer to the byte array.
+//! @param len The length of the byte array.
+//! @return A string object with the provided parameters.
 string string_with_len(u8* bp, int len);
+//! @brief Create a new strings__Builder object with a specified initial size.
+//!
+//! This function creates a new strings__Builder object with the specified initial size.
+//! It sets the necessary flags and returns the newly created builder.
+//!
+//! @param initial_size The initial size of the builder.
+//! @return A new strings__Builder object.
 strings__Builder strings__new_builder(int initial_size);
+//! @brief Convert a strings__Builder object to a string.
+//!
+//! This function iterates through the strings__Builder object, copies its data,
+//! and creates a string object from it. It then trims the unnecessary memory from
+//! the builder.
+//!
+//! @param b A pointer to the strings__Builder object.
+//! @return A string containing the data from the builder.
+//!
+//! @todo Consider error handling for memory allocation failure.
+//! @see strings__Builder, u8_string_with_len, array_trim
+//! @date January 28, 2024
 string strings__Builder_str(strings__Builder* b);
+//! @fn void strings__Builder_free(strings__Builder* b)
+//!
+//! @brief Frees the memory allocated for a string builder.
+//! This function frees the memory block pointed to by the data pointer in the strings__Builder structure.
+//! If the data pointer is already null, no operation is performed.
+//!
+//! @param b Pointer to the string builder to be freed.
 void strings__Builder_free(strings__Builder* b);
+//! @fn string string_clone(string a)
+//! @brief Creates a copy of a string.
+//!
+//! This function creates a copy of the string a.
+//! If a is an empty string, an empty string is returned.
+//!
+//! @param a The string to be cloned.
+//! @return Returns a copy of the string.
 string string_clone(string a);
+//! @fn string tos(u8* s, int len)
+//! @brief Creates a string from a byte array.
+//!
+//! This function creates a string from a byte array s of length len.
+//! If s is NULL, a panic is triggered with a message.
+//! @warning This function will trigger a panic if s is NULL.
+//! @param s Pointer to the byte array.
+//! @param len Length of the byte array.
+//! @return Returns a string consisting of the byte array.
 string tos(u8* s, int len);
+//! @fn void string_free(string* s)
+//! @brief Frees the memory allocated for a string.
+//!
+//! This function frees the memory block pointed to by the pointer in the string structure.
+//! If the string is a literal or the pointer is already null, no operation is performed.
+//! If the string has already been freed, a message is written to the standard output.
+//!
+//! @param s Pointer to the string to be freed.
 void string_free(string* s);
+//! @fn bool endsWithW(const wchar_t *wstr, const wchar_t *wsuffix)
+//! @brief Checks if a wide string ends with a given wide string suffix.
+//!
+//! This function checks if the given wide string (wstr) ends with the specified wide string suffix (wsuffix).
+//! If either wstr or wsuffix is null, the function returns false.
+//! If the length of wsuffix is greater than the length of wstr, the function also returns false.
+//!
+//! @param wstr The wide string to check for the suffix.
+//! @param wsuffix The suffix to check for at the end of wstr.
+//! @return Returns true if wstr ends with wsuffix, otherwise returns false.
 bool endsWithW(const wchar_t *wstr, const wchar_t *wsuffix);
 #define _SLIT0 (string){.str=(byte*)(""), .len=0, .is_lit=1}
 #define _SLIT(s) ((string){.str=(byte*)("" s), .len=(sizeof(s)-1), .is_lit=1})
@@ -98,6 +185,16 @@ inline void strings__Builder_writeln_string(strings__Builder* b, string s) {
 	strings__Builder_write_string(b, _SLIT("\n"));
 }
 
+//! @brief Convert a wide character string to a UTF-8 string.
+//!
+//! This function converts a wide character string to a UTF-8 string and returns
+//! it as a string object. It allocates memory for the resulting string, performs
+//! the conversion using WideCharToMultiByte function, and ensures proper termination
+//! with a null character.
+//!
+//! @param _wstr Pointer to the wide character string.
+//! @param len Length of the wide character string.
+//! @return The UTF-8 string.
 static inline string string_from_wide2(u16* _wstr, int len) {
 	int num_chars = WideCharToMultiByte(65001, 0U, _wstr, len, 0, 0, 0, 0);
 	u8* str_to = malloc_noscan((int)(num_chars + 1));
@@ -108,11 +205,26 @@ static inline string string_from_wide2(u16* _wstr, int len) {
 	return  ((string){.str = str_to, .len = strlen((char*)str_to)});
 }
 
+//! @brief Convert a wide character string to a UTF-8 string.
+//!
+//! This function converts a wide character string to a UTF-8 string and returns
+//! it as a string object. It calculates the length of the wide character string,
+//! then calls the string_from_wide2 function to perform the conversion.
+//!
+//! @param _wstr Pointer to the wide character string.
+//! @return The UTF-8 string.
 static inline string string_from_wide(u16* _wstr) {
 	usize wstr_len = wcslen(_wstr);
 	return string_from_wide2(_wstr, ((int)(wstr_len)));
 }
 
+//! @brief Convert a wide character string literal to a UTF-8 string.
+//!
+//! This macro takes a wide character string literal, prefixes it with 'L', and
+//! converts it to a UTF-8 string using the string_from_wide function.
+//!
+//! @param s The wide character string literal.
+//! @return The UTF-8 string.
 #define _SLITW(s) string_from_wide(L##s)
 
 #define _S_JAEYEONG "JaeyeongScript"

@@ -6,6 +6,11 @@
 #include "language.h"
 #include "edition.h"
 
+//! @struct CompilerOptions
+//! @brief Represents the options for the compiler.
+//!
+//! This structure represents the options that can be set for the compiler.
+//! It contains the language, the edition of the compiler, the input file, and flags for verbose output, debugging, and help.
 struct CompilerOptions {
   Language language;
   Edition edition;
