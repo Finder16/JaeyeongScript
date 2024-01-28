@@ -1,5 +1,6 @@
 {
   "iis.configDir": "",
+  "editor.tabSize": 2,
   "files.associations": {
     "*.wj": "woojin",
     "*.h": "c",

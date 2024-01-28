@@ -16,63 +16,63 @@
 //! It contains a pointer to a byte array, the length of the array, 
 //! and a flag indicating whether the string is a literal.
 struct string {
-	// The pointer to the byte array representing the string.
+  // The pointer to the byte array representing the string.
   byte* str;
-	// The length of the string.
+  // The length of the string.
   size_t len;
-	// A flag indicating whether the string is a literal. If it is a literal, it should not be freed.
-	int is_lit;
+  // A flag indicating whether the string is a literal. If it is a literal, it should not be freed.
+  int is_lit;
 };
 
 union StrIntpMem {
-	u32 d_c;
-	u8 d_u8;
-	i8 d_i8;
-	u16 d_u16;
-	i16 d_i16;
-	u32 d_u32;
-	int d_i32;
-	u64 d_u64;
-	i64 d_i64;
-	f32 d_f32;
-	f64 d_f64;
-	string d_s;
-	string d_r;
-	void* d_p;
-	void* d_vp;
+  u32 d_c;
+  u8 d_u8;
+  i8 d_i8;
+  u16 d_u16;
+  i16 d_i16;
+  u32 d_u32;
+  int d_i32;
+  u64 d_u64;
+  i64 d_i64;
+  f32 d_f32;
+  f64 d_f64;
+  string d_s;
+  string d_r;
+  void* d_p;
+  void* d_vp;
 };
 
 struct StrIntpData {
-	string str;
-	u32 fmt;
-	StrIntpMem d;
+  string str;
+  u32 fmt;
+  StrIntpMem d;
 };
 
 typedef enum {
-	StrIntFlag__UpperCase = (1 << 5)
+  StrIntFlag__UpperCase = (1 << 5)
 } StrIntFlag;
 
 typedef enum {
-	StrIntpType__si_no_str = 0, // 0
-	StrIntpType__si_c, // 0+1
-	StrIntpType__si_u8, // 0+2
-	StrIntpType__si_i8, // 0+3
-	StrIntpType__si_u16, // 0+4
-	StrIntpType__si_i16, // 0+5
-	StrIntpType__si_u32, // 0+6
-	StrIntpType__si_i32, // 0+7
-	StrIntpType__si_u64, // 0+8
-	StrIntpType__si_i64, // 0+9
-	StrIntpType__si_e32, // 0+10
-	StrIntpType__si_e64, // 0+11
-	StrIntpType__si_f32, // 0+12
-	StrIntpType__si_f64, // 0+13
-	StrIntpType__si_g32, // 0+14
-	StrIntpType__si_g64, // 0+15
-	StrIntpType__si_s, // 0+16
-	StrIntpType__si_p, // 0+17
-	StrIntpType__si_r, // 0+18
-	StrIntpType__si_vp, // 0+19
+  StrIntpType__si_no_str = 0, // 0
+  StrIntpType__si_c, // 0+1
+  StrIntpType__si_u8, // 0+2
+  StrIntpType__si_i8, // 0+3
+  StrIntpType__si_u16, // 0+4
+  StrIntpType__si_i16, // 0+5
+  StrIntpType__si_u32, // 0+6
+  StrIntpType__si_i32, // 0+7
+  StrIntpType__si_u64, // 0+8
+  StrIntpType__si_i64, // 0+9
+  StrIntpType__si_e32, // 0+10
+  StrIntpType__si_e64, // 0+11
+  StrIntpType__si_f32, // 0+12
+  StrIntpType__si_f64, // 0+13
+  StrIntpType__si_g32, // 0+14
+  StrIntpType__si_g64, // 0+15
+  StrIntpType__si_s, // 0+16
+  StrIntpType__si_p, // 0+17
+  StrIntpType__si_r, // 0+18
+  StrIntpType__si_vp, // 0+19
 }  StrIntpType;
 
 #define _CLRFlag(a) ((a) &~ StrIntFlag__UpperCase)
@@ -176,13 +176,13 @@ string str_intp(int data_len, StrIntpData* input_base);
 inline u8 strings__Builder_byte_at(strings__Builder* b, int n) { return (*(u8*)array_get(*(((Array_u8*)(b))), n)); }
 
 inline void strings__Builder_write_string(strings__Builder* b, string s) {
-	if (s.len == 0) return;
-	array_push_many(b, s.str, s.len);
+  if (s.len == 0) return;
+  array_push_many(b, s.str, s.len);
 }
 
 inline void strings__Builder_writeln_string(strings__Builder* b, string s) {
-	strings__Builder_write_string(b, s);
-	strings__Builder_write_string(b, _SLIT("\n"));
+  strings__Builder_write_string(b, s);
+  strings__Builder_write_string(b, _SLIT("\n"));
 }
 
 //! @brief Convert a wide character string to a UTF-8 string.
@@ -196,13 +196,13 @@ inline void strings__Builder_writeln_string(strings__Builder* b, string s) {
 //! @param len Length of the wide character string.
 //! @return The UTF-8 string.
 static inline string string_from_wide2(u16* _wstr, int len) {
-	int num_chars = WideCharToMultiByte(65001, 0U, _wstr, len, 0, 0, 0, 0);
-	u8* str_to = malloc_noscan((int)(num_chars + 1));
-	if (str_to != 0) {
-		WideCharToMultiByte(65001, 0U, _wstr, len, ((char*)(str_to)), num_chars, 0, 0);
-		memset(str_to + num_chars, 0, 1);
-	}
-	return  ((string){.str = str_to, .len = strlen((char*)str_to)});
+  int num_chars = WideCharToMultiByte(65001, 0U, _wstr, len, 0, 0, 0, 0);
+  u8* str_to = malloc_noscan((int)(num_chars + 1));
+  if (str_to != 0) {
+    WideCharToMultiByte(65001, 0U, _wstr, len, ((char*)(str_to)), num_chars, 0, 0);
+    memset(str_to + num_chars, 0, 1);
+  }
+  return  ((string){.str = str_to, .len = strlen((char*)str_to)});
 }
 
 //! @brief Convert a wide character string to a UTF-8 string.
@@ -214,8 +214,8 @@ static inline string string_from_wide2(u16* _wstr, int len) {
 //! @param _wstr Pointer to the wide character string.
 //! @return The UTF-8 string.
 static inline string string_from_wide(u16* _wstr) {
-	usize wstr_len = wcslen(_wstr);
-	return string_from_wide2(_wstr, ((int)(wstr_len)));
+  usize wstr_len = wcslen(_wstr);
+  return string_from_wide2(_wstr, ((int)(wstr_len)));
 }
 
 //! @brief Convert a wide character string literal to a UTF-8 string.

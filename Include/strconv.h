@@ -21,60 +21,60 @@
 #define _const_strconv__pow5_inv_num_bits_64 122
 
 typedef enum {
-	strconv__Align_text__right = 0, // 0
-	strconv__Align_text__left, // 0+1
-	strconv__Align_text__center, // 0+2
+  strconv__Align_text__right = 0, // 0
+  strconv__Align_text__left, // 0+1
+  strconv__Align_text__center, // 0+2
 }  strconv__Align_text;
 
 struct strconv__BF_param {
-	u8 pad_ch;
-	int len0;
-	int len1;
-	bool positive;
-	bool sign_flag;
-	strconv__Align_text align;
-	strconv__Align_text allign;
-	bool rm_tail_zero;
+  u8 pad_ch;
+  int len0;
+  int len1;
+  bool positive;
+  bool sign_flag;
+  strconv__Align_text align;
+  strconv__Align_text allign;
+  bool rm_tail_zero;
 };
 
 union strconv__Float32u {
-	f32 f;
-	f32 u;
+  f32 f;
+  f32 u;
 };
 
 struct strconv__Dec32 {
-	u32 m;
-	int e;
+  u32 m;
+  int e;
 };
 
 union strconv__Uf32 {
-	f32 f;
-	u32 u;
+  f32 f;
+  u32 u;
 };
 
 struct strconv__Dec64 {
-	u64 m;
-	int e;
+  u64 m;
+  int e;
 };
 
 struct strconv__Uint128 {
-	u64 lo;
-	u64 hi;
+  u64 lo;
+  u64 hi;
 };
 
 union strconv__Uf64 {
-	f64 f;
-	u64 u;
+  f64 f;
+  u64 u;
 };
 
 struct multi_return_strconv__Dec32_bool {
-	strconv__Dec32 arg0;
-	bool arg1;
+  strconv__Dec32 arg0;
+  bool arg1;
 };
 
 struct multi_return_strconv__Dec64_bool {
-	strconv__Dec64 arg0;
-	bool arg1;
+  strconv__Dec64 arg0;
+  bool arg1;
 };
 
 string strconv__format_int(i64 n, int radix);

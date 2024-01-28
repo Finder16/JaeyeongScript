@@ -31,9 +31,9 @@ typedef int64_t int_literal;
 
 #ifdef __cplusplus
   #include <utility>
-	#define _MOV std::move
+  #define _MOV std::move
 #else
-	#define _MOV
+  #define _MOV
 #endif /* __cplusplus */
 #define ADDR(type, expr) (&((type[]){expr}[0]))
 

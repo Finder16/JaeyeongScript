@@ -17,7 +17,7 @@ TEST_OBJ_FILES := $(patsubst $(TESTDIR)/%/%.c,$(TESTBUILDDIR)/%.o,$(TEST_FILES))
 
 $(BUILDDIR)/$(TARGET): $(OBJ_FILES)
 	$(GCC) $(GCCFLAGS) $^ -o $@
-	del /Q build\*.o
+  del /Q build\*.o
 
 $(BUILDDIR)/%.o: $(SRCDIR)/%.c
 	$(GCC) $(GCCFLAGS) -c $< -o $@
@@ -35,7 +35,7 @@ endef
 
 $(foreach subdir,$(TEST_SUBDIRS),$(eval $(call test-dir-rule,$(subdir))))
 test: $(patsubst $(TESTDIR)/%,$(TESTBUILDDIR)/%.exe,$(TEST_SUBDIRS))
-	for /d %%i in (build\test\*) do rmdir /s /q "%%i"
+  for /d %%i in (build\test\*) do rmdir /s /q "%%i"
 
 clean:
-	del /Q build\*
+  del /Q build\*

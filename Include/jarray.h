@@ -5,17 +5,17 @@
 #include "apua.h"
 
 typedef enum {
-	ArrayFlags__noslices = 1U, // u64(1) << 0
-	ArrayFlags__noshrink = 2U, // u64(1) << 1
-	ArrayFlags__nogrow = 4U, // u64(1) << 2
-	ArrayFlags__nofree = 8U, // u64(1) << 3
+  ArrayFlags__noslices = 1U, // u64(1) << 0
+  ArrayFlags__noshrink = 2U, // u64(1) << 1
+  ArrayFlags__nogrow = 4U, // u64(1) << 2
+  ArrayFlags__nofree = 8U, // u64(1) << 3
 }  ArrayFlags;
 
 struct array {
   void* data;
   int offset;
-	int len;
-	int cap;
+  int len;
+  int cap;
   ArrayFlags flags;
   int element_size;
 };
