@@ -1,0 +1,28 @@
+{
+  "iis.configDir": "",
+  "files.associations": {
+    "*.wj": "woojin",
+    "*.h": "c",
+    "__config": "c",
+    "__verbose_abort": "c",
+    "cmath": "c",
+    "cstddef": "c",
+    "cstdint": "c",
+    "cstdlib": "c",
+    "cstring": "c",
+    "cwchar": "c",
+    "initializer_list": "c",
+    "iosfwd": "c",
+    "limits": "c",
+    "new": "c",
+    "stdexcept": "c",
+    "algorithm": "c",
+    "type_traits": "cpp",
+    "ratio": "cpp",
+    "tuple": "cpp",
+    "variant": "cpp",
+    "iterator": "c",
+    "memory": "c",
+    "version": "c"
+  }
+}
