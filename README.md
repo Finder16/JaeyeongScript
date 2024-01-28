@@ -31,11 +31,11 @@ For more options and usage examples, refer to the documentation in the `docs` di
 Contributions are welcome! If you find a bug or want to suggest a new feature, please open an issue or submit a pull request.
 
 ## License
-The work presented in this project draws inspiration from Vlang. The majority of the code contained within the files array.c, string.c, and map.c, io.c, error.c etc. has been directly sourced from the Vlang project's source code repository. It is important to note that the code obtained from the Vlang project is governed by the MIT License.
+Certain portions of the source code in this project have been adapted from Vlang. Specifically, the code segments found in array.c, string.c, map.c, io.c etc. have been derived from the Vlang project's source code repository. It should be noted that these particular sections of code obtained from Vlang are governed by the MIT License.
 
-While we have diligently marked most of the functions and structures sourced from Vlang with the Doxygen @copyright tag, there is a possibility that some instances may have been inadvertently overlooked. Nonetheless, it remains unequivocally clear that any code imported from the Vlang project is subject to the terms of the MIT License.
+Although extensive efforts have been made to appropriately attribute functions and structures sourced from Vlang by employing the Doxygen @copyright tag, there remains a possibility that some instances may have been inadvertently overlooked. Nonetheless, it is indisputably clear that any code segments imported from the Vlang project are subject to the terms outlined in the MIT License.
 
-Furthermore, it is imperative to understand that all code unique to the JaeyeongScript project is licensed under the terms of the GNU Affero General Public License version 3 (AGPL-3). For a comprehensive understanding of the rights and obligations associated with the use and distribution of the JaeyeongScript codebase, we strongly encourage you to refer to the LICENSE file provided within this repository.
+Additionally, it is important to clarify that all other components of the JaeyeongScript project, not derived from Vlang, are licensed under the GNU Affero General Public License version 3 (AGPL-3). For comprehensive insights into the rights and obligations associated with the usage and distribution of the JaeyeongScript codebase, we strongly recommend consulting the [LICENSE](LICENSE) file included within this repository.
 
 ## References
 
