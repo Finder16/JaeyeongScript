@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "jaeyeong.h"
-
 i64 total_memory = ((i64)(0));
 
 DONOTUSE u8* prealloc_calloc(isize n) {
