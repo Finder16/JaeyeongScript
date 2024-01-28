@@ -4,6 +4,7 @@
 #include "jstrings.h"
 
 //! @fn void _write_buf_to_fd(int fd, u8* buf, int buf_len)
+//! @copyright Alexander Medvednikov
 //! \~english @brief Writes the content of a buffer to a file descriptor.
 //! This function writes the content of a buffer to a given file descriptor.
 //! If the buffer length is less than or equal to 0, the function will return without doing anything.
@@ -20,6 +21,7 @@
 //! @return void
 void _write_buf_to_fd(int fd, u8* buf, int buf_len);
 //! @fn void _writeln_to_fd(int fd, string s)
+//! @copyright Alexander Medvednikov
 //! \~english @brief Writes a string to a file descriptor, followed by a newline.
 //! This function writes a given string to a file descriptor,
 //! and then writes a newline character (`\\n`). The function uses the helper function _write_buf_to_fd.
@@ -35,6 +37,7 @@ void _write_buf_to_fd(int fd, u8* buf, int buf_len);
 //! @return void
 void _writeln_to_fd(int fd, string s);
 //! @fn void eprint(string s)
+//! @copyright Alexander Medvednikov
 //! \~english @brief Prints a string to standard error.
 //! This function prints a given string to the standard error using the helper function _write_buf_to_fd.
 //! If the string pointer is null, the function will print "eprint(NIL)" to the standard error.
@@ -49,6 +52,7 @@ void _writeln_to_fd(int fd, string s);
 //! @return void
 void eprint(string s);
 //! @fn void eprintln(string s)
+//! @copyright Alexander Medvednikov
 //! \~english @brief Prints a string to standard error, followed by a newline.
 //! This function prints a given string to the standard error using the helper function _writeln_to_fd.
 //! If the string pointer is null, the function will print "eprintln(NIL)" to the standard error.
@@ -63,6 +67,7 @@ void eprint(string s);
 //! @return void
 void eprintln(string s);
 //! @fn void print(string s)
+//! @copyright Alexander Medvednikov
 //! \~english @brief Prints a string to standard output.
 //! This function prints a given string to the standard output using the helper function _write_buf_to_fd. <br>
 //! If the string pointer is null, the function will print "print(NIL)" to the standard output.
@@ -77,6 +82,7 @@ void eprintln(string s);
 //! @return void
 void print(string s);
 //! @fn void println(string s)
+//! @copyright Alexander Medvednikov
 //! \~english @brief Prints a string to standard output, followed by a newline.
 //! This function prints a given string to the standard output using the helper function _writeln_to_fd.
 //! If the string pointer is null, the function will print "println(NIL)" to the standard output.
