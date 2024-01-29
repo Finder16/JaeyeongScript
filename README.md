@@ -39,8 +39,6 @@ Additionally, it is important to clarify that all other components of the Jaeyeo
 
 ## References
 
-- none
-
 ## Changelog
 
 See [CHANGELOG.md](CHANGELOG.md) for release notes and version history.
