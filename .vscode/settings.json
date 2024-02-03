@@ -25,7 +25,8 @@
     "iterator": "c",
     "memory": "c",
     "version": "c",
-    "*.exe": "c"
+    "*.exe": "c",
+    "LEX.C": "cpp"
   },
   "C_Cpp.markdownInComments": "enabled",
   "C_Cpp.doxygen.generatedStyle": "//!",
@@ -48,6 +49,8 @@
     "date",
     "note",
     "author",
-    "authors"
+    "authors",
+    "pre",
+    "details"
   ],
 }

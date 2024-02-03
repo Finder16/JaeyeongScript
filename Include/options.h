@@ -5,31 +5,26 @@
 #include "apua.h"
 #include "language.h"
 #include "edition.h"
+#include "file.h"
+#include "error.h"
 
-//! @struct CompilerOptions
-//! \~english @brief Represents the options for the compiler.
-//! This structure represents the options that can be set for the compiler.
-//! It contains the language, the edition of the compiler, the input file, and flags for verbose output, debugging, and help.
-//! \~korean @brief 컴파일러의 옵션을 나타냅니다.
-//! 이 구조체는 컴파일러에 설정할 수 있는 옵션을 나타냅니다.
-//! 언어, 컴파일러의 에디션, 입력 파일, 그리고 자세한 출력, 디버깅, 도움말에 대한 플래그를 포함합니다.
-struct CompilerOptions {
-  Language language;
-  Edition edition;
-  wchar_t *input_file;
-  bool verbose;
-  bool debug;
-  bool help;
+//! @struct Option 타입입니다.
+//! @details 값이 있을 수도 있고 없을 수도 있는 상황을 나타내는 타입입니다.
+struct Option {
+  bool is_some; //! @brief 값이 있는지 없는지를 나타내는 불리언입니다.
+  void* value; //! @brief 실제 값입니다. 값이 없는 경우 NULL입니다.
+  size_t size; //! @brief 값의 크기입니다.
+  int state;
+  ErrorInterface error; //! @brief 에러가 발생했을 경우의 에러입니다.
 };
 
-//! @fn CompilerOptions default_options(void)
-//! \~english @brief Returns the default compiler options.
-//! This function returns a CompilerOptions structure with default values.
-//! The default values are: English language, 2024 edition, no input file, and no verbose output, debugging, or help.
-//! \~korean @brief 기본 컴파일러 옵션을 반환합니다.
-//! 이 함수는 기본값으로 CompilerOptions 구조체를 반환합니다.
-//! 기본값은 다음과 같습니다: 영어 언어, 2024 에디션, 입력 파일 없음, 자세한 출력, 디버깅, 도움말 없음.
-//! \~english @return Returns a CompilerOptions structure with default values.
-//! \~korean @return 기본값으로 설정된 CompilerOptions 구조체를 반환합니다.
-CompilerOptions default_options(void);
+//! @brief value를 Option으로 감싸서 반환합니다.
+//! @param value Option으로 감쌀 값입니다. 꼭 `void*`로 타입캐스팅 후 전달해야 합니다
+//! @param size value의 크기입니다. 일반적으로 `sizeof(value)`로 전달합니다.
+//! @return value를 감싼 Option입니다.
+Option some(void* value, size_t size);
+
+//! @brief Option의 None 값을 반환합니다. 이 반환값은 값이 없다는 것을 의미합니다.
+//! @return Option의 None값입니다.
+Option none(void);
 #endif

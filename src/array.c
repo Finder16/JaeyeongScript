@@ -87,7 +87,7 @@ void array_ensure_cap(array* a, int required) {
   if (required <= a->cap) {
     return;
   }
-  if (ArrayFlags_has(&a->flags, ArrayFlags__nogrow)) __panic( str_intp(2, _MOV((StrIntpData[]){{_SLIT("array.ensure_cap: array with the flag `.nogrow` cannot grow in size, array required new size: "), /*100 &int*/0x7, {.d_i32 = required}}, {_SLIT0, 0, { .d_c = 0 }}})));
+  if (ArrayFlags_has(&a->flags, ArrayFlags__nogrow)) __panic( str_intp(2, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_ENSURE_CAP_NOGROW), /*100 &int*/0x7, {.d_i32 = required}}, {_SLIT0, 0, { .d_c = 0 }}})));
   int cap = (a->cap > 0 ? (a->cap) : (2));
   for (;;) {
     if (!(required > cap)) break;
@@ -109,7 +109,7 @@ array array_repeat(array a, int count) {
 }
 
 array array_repeat_to_depth(array a, int count, int depth) {
-  if (count < 0) __panic( str_intp(2, _MOV((StrIntpData[]){{_SLIT("array.repeat: count is negative: "), /*100 &int*/0x7, {.d_i32 = count}}, {_SLIT0, 0, { .d_c = 0 }}})));
+  if (count < 0) __panic( str_intp(2, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_REPEAT_COUNT_NEG), 0x7, {.d_i32 = count}}, {_SLIT0, 0, { .d_c = 0 }}})));
   u64 size = (u64)((u64)(((u64)(count)) * ((u64)(a.len))) * ((u64)(a.element_size)));
   if (size == 0U) size = ((u64)(a.element_size));
   array arr = ((array){.data = jcalloc(size),.offset = 0,.len = (int)(count * a.len),.cap = (int)(count * a.len),.flags = 0,.element_size = a.element_size,});
@@ -133,7 +133,7 @@ array array_repeat_to_depth(array a, int count, int depth) {
 }
 
 void array_insert(array* a, int i, void* val) {
-  if (i < 0 || i > a->len) __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.insert: index out of range (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+  if (i < 0 || i > a->len) __panic( str_intp(3, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_INSERT_OOR), 0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), 0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
   if (a->len >= a->cap) array_ensure_cap(a, (int)(a->len + 1));
   memmove(array_get_unsafe(/*rec*/*a, (int)(i + 1)), array_get_unsafe(/*rec*/*a, i), (u64)(((u64)(((int)(a->len - i)))) * ((u64)(a->element_size))));
   array_set_unsafe(a, i, val);
@@ -141,7 +141,7 @@ void array_insert(array* a, int i, void* val) {
 }
 
 void array_insert_many(array* a, int i, void* val, int size) {
-  if (i < 0 || i > a->len) __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.insert_many: index out of range (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+  if (i < 0 || i > a->len) __panic( str_intp(3, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_INSERT_MANY_OOR), 0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), 0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
   array_ensure_cap(a, (int)(a->len + size));
   int elem_size = a->element_size;
   void* iptr = array_get_unsafe(/*rec*/*a, i);
@@ -159,8 +159,7 @@ void array_delete(array* a, int i) { array_delete_many(a, i, 1); }
 void array_delete_many(array* a, int i, int size) {
   if (i < 0 || (int)(i + size) > a->len) {
     string endidx = (size > 1 ? ( str_intp(2, _MOV((StrIntpData[]){{_SLIT(".."), /*100 &int*/0x7, {.d_i32 = (int)(i + size)}}, {_SLIT0, 0, { .d_c = 0 }}}))) : (_SLIT("")));
-    // __panic( str_intp(4, _MOV((StrIntpData[]){{_SLIT("array.delete: index out of range  (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT0, /*115 &string*/0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
-    __panic( str_intp(4, _MOV((StrIntpData[]){{_SLIT("array.delete: Індекс поза межами діапазону  (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT0, /*115 &string*/0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+    __panic( str_intp(4, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_DELETE_OOR), 0x7, {.d_i32 = i}}, {_SLIT0, 0x10, {.d_s = endidx}}, {_SLIT(", a.len == "), 0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
   }
   if (ArrayFlags_all(&a->flags, (ArrayFlags__noshrink | ArrayFlags__noslices))) {
     memmove(((u8*)(a->data)) + (u64)(((u64)(i)) * ((u64)(a->element_size))), ((u8*)(a->data)) + (u64)(((u64)((int)(i + size))) * ((u64)(a->element_size))), (u64)(((u64)((int)((int)(a->len - i) - size))) * ((u64)(a->element_size))));
@@ -195,7 +194,7 @@ void array_drop(array* a, int num) {
 void* array_get_unsafe(array a, int i) { return ((u8*)(a.data)) + (u64)(((u64)(i)) * ((u64)(a.element_size))); }
 
 void* array_get(array a, int i) {
-  if (i < 0 || i >= a.len) __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.get: index out of range (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a.len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+  if (i < 0 || i >= a.len) __panic( str_intp(3, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_GET_OOR), 0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), 0x7, {.d_i32 = a.len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
   return ((u8*)(a.data)) + (u64)(((u64)(i)) * ((u64)(a.element_size)));
 }
 
@@ -205,17 +204,17 @@ void* array_get_with_check(array a, int i) {
 }
 
 void* array_first(array a) {
-  if (a.len == 0) __panic(_SLIT("array.first: array is empty"));
+  if (a.len == 0) __panic(LANG(JAEYEONG_ERR_ARR_FIRST_EMPTY));
   return a.data;
 }
 
 void* array_last(array a) {
-  if (a.len == 0) __panic(_SLIT("array.last: array is empty"));
+  if (a.len == 0) __panic(LANG(JAEYEONG_ERR_ARR_LAST_EMPTY));
   return ((u8*)(a.data)) + (u64)(((u64)((int)(a.len - 1))) * ((u64)(a.element_size)));
 }
 
 void* array_pop(array* a) {
-  if (a->len == 0) __panic(_SLIT("array.pop: array is empty"));
+  if (a->len == 0) __panic(LANG(JAEYEONG_ERR_ARR_POP_EMPTY));
   int new_len = (int)(a->len - 1);
   u8* last_elem = ((u8*)(a->data)) + (u64)(((u64)(new_len)) * ((u64)(a->element_size)));
   a->len = new_len;
@@ -223,7 +222,7 @@ void* array_pop(array* a) {
 }
 
 void array_delete_last(array* a) {
-  if (a->len == 0) __panic(_SLIT("array.pop: array is empty"));
+  if (a->len == 0) __panic(LANG(JAEYEONG_ERR_ARR_POP_EMPTY));
   a->len--;
 }
 
@@ -232,15 +231,15 @@ array array_slice(array a, int start, int _end) {
   #if !defined(CUSTOM_DEFINE_no_bounds_checking)
   {
     if (start > end) {
-      __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.slice: invalid slice index ("), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" > "), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+      __panic( str_intp(3, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_SLICE_INV_INDEX), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" > "), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
       UNREACHABLE();
     }
     if (end > a.len) {
-      __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.slice: slice bounds out of range ("), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(" >= "), /*100 &int*/0x7, {.d_i32 = a.len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+      __panic( str_intp(3, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_SLICE_BOOR), /*100 &int*/0x7, {.d_i32 = end}}, {_SLIT(" >= "), /*100 &int*/0x7, {.d_i32 = a.len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
       UNREACHABLE();
     }
     if (start < 0) {
-      __panic(str_intp(2, _MOV((StrIntpData[]){{_SLIT("array.slice: slice bounds out of range ("), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" < 0)"), 0, { .d_c = 0 }}})));
+      __panic(str_intp(2, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_SLICE_BOOR), /*100 &int*/0x7, {.d_i32 = start}}, {_SLIT(" < 0)"), 0, { .d_c = 0 }}})));
       UNREACHABLE();
     }
   }
@@ -310,7 +309,7 @@ array array_clone_to_depth(array* a, int depth) {
 
 void array_set(array* a, int i, void* val) {
   if (i < 0 || i >= a->len) {
-    __panic( str_intp(3, _MOV((StrIntpData[]){{_SLIT("array.set: index out of range (i == "), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
+    __panic( str_intp(3, _MOV((StrIntpData[]){{LANG(JAEYEONG_ERR_ARR_SET_OOR), /*100 &int*/0x7, {.d_i32 = i}}, {_SLIT(", a.len == "), /*100 &int*/0x7, {.d_i32 = a->len}}, {_SLIT(")"), 0, { .d_c = 0 }}})));
     UNREACHABLE();
   }
   memcpy(((u8*)(a->data)) + (u64)(((u64)(a->element_size)) * ((u64)(i))), val, a->element_size);
@@ -337,10 +336,37 @@ void array_push_many(array* a3, void* val, int size) {
 
 void array_free(array* a) {
   if (ArrayFlags_has(&a->flags, ArrayFlags__nofree)) {
-    __panic(_SLIT("array.free: array with the flag `.nofree` cannot be freed"));
+    __panic(LANG(JAEYEONG_ERR_FREE_NOFREE));
     UNREACHABLE();
   }
   u8* mblock_ptr = ((u8*)((u64)(((u64)(a->data)) - ((u64)(a->offset)))));
   jfree(mblock_ptr);
   a->data = ((void*)0);
+}
+
+string Array_string_join(Array_string a, string sep) {
+  if (a.len == 0) { return _SLIT(""); }
+  int len = 0;
+  for (int _t2 = 0; _t2 < a.len; ++_t2) {
+    string val = ((string*)a.data)[_t2];
+    len += (int)(val.len + sep.len);
+  }
+  len -= sep.len;
+  string res = ((string){.str = malloc_noscan((int)(len + 1)), .len = len});
+  int idx = 0;
+  for (int i = 0; i < a.len; ++i) {
+    string val = ((string*)a.data)[i];
+    { // Unsafe block
+      memcpy(((void*)(res.str + idx)), val.str, val.len);
+      idx += val.len;
+    }
+    if (i != (int)(a.len - 1)) {
+      { // Unsafe block
+        memcpy(((void*)(res.str + idx)), sep.str, sep.len);
+        idx += sep.len;
+      }
+    }
+  }
+  res.str[res.len] = 0;
+  return res;
 }

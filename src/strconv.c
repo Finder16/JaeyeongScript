@@ -30,7 +30,7 @@ string strconv__format_int(i64 n, int radix) {
   const char *digits = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   i64 num = n < 0 ? -n : n;
   do {
-      *--ptr = digits[num % radix];
+    *--ptr = digits[num % radix];
     num /= radix;
   } while (num > 0);
   if (n < 0) *--ptr = '-';

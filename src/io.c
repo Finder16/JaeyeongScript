@@ -18,6 +18,21 @@ void _write_buf_to_fd(int fd, u8* buf, int buf_len){
   }
 }
 
+void _write(int fd, uint8_t* buf, int len) {
+  if (len <= 0) return;
+  u8* ptr = buf;
+  ptrdiff_t remain = ((ptrdiff_t)(len));
+  ptrdiff_t x = ((ptrdiff_t)(0));
+  void* stream = ((void*)(__acrt_iob_func(1)));
+  if (fd == 2) stream = ((void*)(__acrt_iob_func(2)));
+  for (;;) {
+    if (!(remain > 0)) break;
+    x = ((ptrdiff_t)(fwrite(ptr, 1, remain, stream)));
+    ptr += x;
+    remain -= x;
+  }
+}
+
 void _writeln_to_fd(int fd, string s) {
   bool _writeln_to_fd_defer_0 = false;
   u8* buf;

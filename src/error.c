@@ -2,9 +2,24 @@
 #include <stdlib.h>
 #include "jaeyeong.h"
 
+ErrorInterface __error(string msg) {
+  return jerror(msg, 0);
+}
+
+ErrorInterface jerror(string s, int errcode) {
+  MessageError* x = ((MessageError*)memdup(&(MessageError){.msg = s, .code = errcode}, sizeof(MessageError)));
+  return (ErrorInterface) {
+    ._MessageError = x,
+    ._typ = (ERRINTFACE_T_MESGERR),
+    .msg = (string*)((char*)x + __offsetof_ptr(x, MessageError, msg)),
+    .errcode = *(int*)((char*)x + __offsetof_ptr(x, MessageError, code)),
+  };
+}
+
 void panic(string s, char* file, int line, char* func) {
-  eprint(str_intp(4, _MOV(StrIntpData[]){{_SLITW("\e[0;31mфункція \e[4;31m\e[0;37m"), /*115 &string*/0x10, { .d_s =  tos((u8*)func, strlen(func)) }}, {_SLITW("\e[0;31m викинула виняток у "), 0x10, { .d_s = tos((u8*)file, strlen(file)) }}, {_SLIT(":"), 0x7, { .d_c = line }}, {_SLIT("\x1b[0m\n  \e[0;97m"), 0x0, {0}}}));
-  eprintln(s);
-  eprint(_SLIT("\x1b[0m"));
+  eprint(str_intp(3, _MOV(StrIntpData[]){{red(_SLITW("функція ")), 0x10, { .d_s =  bright_white(tos((u8*)func, strlen(func))) }}, {red(_SLITW(" викинула виняток у ")), 0x10, { .d_s = red(tos((u8*)file, strlen(file))) }}, {_SLIT(":"), 0x7, { .d_c = line }}}));
+  eprint(_SLIT("\n  "));
+  eprintln(bright_white(s));
+  bulitin_cleanup();
   exit(0);
 }

@@ -3,22 +3,23 @@
 #include "jaeyeong.h"
 
 i64 total_memory = ((i64)(0));
+i64 total_free = ((i64)(0));
 
 DONOTUSE u8* prealloc_calloc(isize n) {
   UNREACHABLE();
-  return ((u8*)(0));
+  return ((u8*)(n-n));
 }
 
 DONOTUSE u8* prealloc_malloc(isize n) {
   UNREACHABLE();
-  return ((u8*)(0));
+  return ((u8*)(n-n));
 }
 
 u8* jcalloc(isize n) {
-  #if defined(_JAEYEONG_DEV_TRACE_CALLOC)
+  #if defined(_JAEYEONG_DEV_TRACE_CALLOC) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
     total_memory += n;
-    fprintf(stderr, "jcalloc %6d total %10d\n", n, total_memory);
+    fprintf(stderr, "jcalloc  %6d total %10d\n", n, total_memory);
   }
   #endif
   if (n < 0) {
@@ -38,10 +39,10 @@ u8* jcalloc(isize n) {
 }
 
 u8* jcalloc_noscan(isize n) {
-  #if defined(_JAEYEONG_DEV_TRACE_CALLOC)
+  #if defined(_JAEYEONG_DEV_TRACE_CALLOC) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
-    total_m += n;
-    fprintf(stderr, "jcalloc_noscan %6d total %10d\n", n, total_m);
+    total_memory += n;
+    fprintf(stderr, "jcalloc_noscan %6d total %10d\n", n, total_memory);
   }
   #endif
   #if defined(_JAEYEONG_PREALLOC)
@@ -57,10 +58,10 @@ u8* jcalloc_noscan(isize n) {
 }
 
 UNSAFE u8* jmalloc(isize n) {
-  #if defined(_JAEYEONG_DEV_TRACE_MALLOC)
+  #if defined(_JAEYEONG_DEV_TRACE_MALLOC) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
-    total_m += n;
-    fprintf(stderr, "jmalloc %6d total %10d\n", n, total_m);
+    total_memory += n;
+    fprintf(stderr, "jmalloc %6d total %10d\n", n, total_memory);
   }
   #endif
   if (n < 0) {
@@ -90,10 +91,10 @@ UNSAFE u8* jmalloc(isize n) {
 }
 
 UNSAFE u8* malloc_noscan(isize n) {
-  #if defined(_JAEYEONG_DEV_TRACE_MALLOC)
+  #if defined(_JAEYEONG_DEV_TRACE_MALLOC) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
-    total_m += n;
-    fprintf(stderr, "malloc_noscan %6d total %10d\n", n, total_m);
+    total_memory += n;
+    fprintf(stderr, "malloc_noscan %6d total %10d\n", n, total_memory);
   }
   #endif
   if (n < 0) {
@@ -123,7 +124,7 @@ UNSAFE u8* malloc_noscan(isize n) {
 }
 
 UNSAFE u8* jrealloc(u8* b, isize n) {
-  #if defined(_JAEYEONG_DEV_TRACE_REALLOC)
+  #if defined(_JAEYEONG_DEV_TRACE_REALLOC) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
     fprintf(stderr, "jrealloc %6d\n", n);
   }
@@ -148,7 +149,7 @@ UNSAFE u8* jrealloc(u8* b, isize n) {
 }
 
 UNSAFE u8* realloc_data(u8* old_data, int old_size, int new_size) {
-  #if defined(_JAEYEONG_DEV_TRACE_REALLOC)
+  #if defined(_JAEYEONG_DEV_TRACE_REALLOC) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   { 
     fprintf(stderr, "realloc_data old_size: %6d new_size: %6d\n", old_size, new_size);
   }
@@ -178,7 +179,7 @@ UNSAFE u8* realloc_data(u8* old_data, int old_size, int new_size) {
 }
 
 UNSAFE void* memdup(void* src, isize sz) {
-  #if defined(_JAEYEONG_DEV_TRACE_MEMDUP)
+  #if defined(_JAEYEONG_DEV_TRACE_MEMDUP) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
     fprintf(stderr, "memdup size: %10d\n", sz);
   }
@@ -189,7 +190,7 @@ UNSAFE void* memdup(void* src, isize sz) {
 }
 
 UNSAFE void* memdup_noscan(void* src, isize sz) {
-  #if defined(_JAEYEONG_DEV_TRACE_MEMDUP) 
+  #if defined(_JAEYEONG_DEV_TRACE_MEMDUP) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
   {
     fprintf(stderr, "memdup_noscan size: %10d\n", sz);
   }
@@ -200,6 +201,11 @@ UNSAFE void* memdup_noscan(void* src, isize sz) {
 }
 
 UNSAFE void jfree(void* ptr) {
+  #if defined(_JAEYEONG_DEV_TRACE_FREE) || defined(_JAEYEONG_DEV_TRACE_MEMORY)
+  {
+    fprintf(stderr, "jfree size: %10d\n", sizeof(ptr));
+  }
+  #endif
   #if defined(_JAEYEONG_PREALLOC) 
   {
     return;

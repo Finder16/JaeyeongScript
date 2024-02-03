@@ -1,0 +1,62 @@
+#ifndef __JAEYEONG_PREFERENCES_H__
+#define __JAEYEONG_PREFERENCES_H__
+#include "apua.h"
+
+typedef                       int OSTYPE;
+#define PREF_OS_AUTO          (0)
+#define PREF_OS_IOS           (PREF_OS_AUTO+1)
+#define PREF_OS_MACOS         (PREF_OS_IOS+1)
+#define PREF_OS_LINUX         (PREF_OS_MACOS+1)
+#define PREF_OS_WINDOWS       (PREF_OS_LINUX+1)
+#define PREF_OS_FREEBSD       (PREF_OS_WINDOWS+1)
+#define PREF_OS_OPENBSD       (PREF_OS_FREEBSD+1)
+#define PREF_OS_NETBSD        (PREF_OS_OPENBSD+1)
+#define PREF_OS_ANDROID       (PREF_OS_NETBSD+1)
+#define PREF_OS_SOLARIS       (PREF_OS_ANDROID+1)
+#define PREF_OS_TERMUX        (PREF_OS_SOLARIS+1)
+#ifdef JAEYEONG_BUILD_INCLUDE_RUSSIAN_OS
+#  define PREF_OS_ASTRA_LINUX (PREF_OS_TERMUX+1)
+#  define PREF_OS_ROSA_LINUX  (PREF_OS_ASTRA_LINUX+1)
+#endif
+
+typedef                            int BACKENDTYPE;
+#define PREF_BACKEND_AUTO          (0)
+#define PREF_BACKEND_C             (PREF_BACKEND_AUTO+1)
+#define PREF_BACKEND_CPP           (PREF_BACKEND_C+1)
+#define PREF_BACKEND_GO            (PREF_BACKEND_CPP+1)
+#define PREF_BACKEND_ZIG           (PREF_BACKEND_GO+1)
+#define PREF_BACKEND_INTERPRET     (PREF_BACKEND_ZIG+1)
+#ifndef JAEYEONG_BUILD_BACKEND_EXPERIMENTAL
+#   define PREF_BACKEND_RUST       (PREF_BACKEND_INTERPRET+1)
+#   define PREF_BACKEND_PYTHON     (PREF_BACKEND_RUST+1)
+#   define PREF_BACKEND_JAVASCRIPT (PREF_BACKEND_PYTHON+1)
+#   define PREF_BACKEND_RUBY       (PREF_BACKEND_JAVASCRIPT+1)
+#   define PREF_BACKEND_PHP        (PREF_BACKEND_RUBY+1)
+#   define PREF_BACKEND_CSHARP     (PREF_BACKEND_PHP+1)
+#   define PREF_BACKEND_D          (PREF_BACKEND_CSHARP+1)
+#   define PREF_BACKEND_KOTLIN     (PREF_BACKEND_D+1)
+#   define PREF_BACKEND_SCALA      (PREF_BACKEND_KOTLIN+1)
+#   define PREF_BACKEND_LUA        (PREF_BACKEND_SCALA+1)
+#   define PREF_BACKEND_CLOJURE    (PREF_BACKEND_LUA+1)
+#   define PREF_BACKEND_HASKELL    (PREF_BACKEND_CLOJURE+1)
+#   define PREF_BACKEND_SWIFT      (PREF_BACKEND_HASKELL+1)
+#endif
+
+typedef int                    OUTPUTMODE;
+#define PREF_OUTPUTMODE_STDOUT (0)
+#define PREF_OUTPUTMODE_SLIENT (PREF_OUTPUTMODE_STDOUT+1)
+
+typedef int                     COLOROUTPUT;
+#define PREF_COLOROUTPUT_AUTO   (0)
+#define PREF_COLOROUTPUT_ALWAYS (PREF_COLOROUTPUT_AUTO+1)
+#define PREF_COLOROUTPUT_NEVER  (PREF_COLOROUTPUT_ALWAYS+1)
+
+struct Preferences {
+  OSTYPE os;
+  BACKENDTYPE backend;
+  OUTPUTMODE output_mode;
+  bool check_only;
+};
+
+Preferences* _new_preferences(void);
+#endif /* __JAEYEONG_PREFERENCES_H__ */

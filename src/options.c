@@ -13,3 +13,10 @@ CompilerOptions default_options(void) {
   };
   return options;
 }
+
+void free_options(CompilerOptions* options) {
+  if (options->input_file->file_ptr != NULL) {
+    close_apua_file(options->input_file);
+    options->input_file = NULL;
+  }
+}

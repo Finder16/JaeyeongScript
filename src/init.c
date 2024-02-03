@@ -36,3 +36,21 @@ void builtin_init(void) {
   }
   #endif
 }
+
+Option some(void* value, size_t size) {
+  Option option;
+  option.is_some = true;
+  option.value = value;
+  option.size = size;
+  option.state = 0;
+  return option;
+}
+
+Option none(void) {
+  Option option;
+  option.is_some = false;
+  option.value = _jNULL;
+  option.size = 0;
+  option.state = -1;
+  return option;
+}
