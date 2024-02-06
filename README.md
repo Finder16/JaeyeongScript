@@ -46,6 +46,3 @@ See [CHANGELOG.md](CHANGELOG.md) for release notes and version history.
 ## Issue Reporting and Feature Requests
 
 To report bugs or request new features, please open an issue on the [issue tracker](https://github.com/Finder16/JaeyeongScript/issues).
-
-
-## 재영이 엄마 죽음
